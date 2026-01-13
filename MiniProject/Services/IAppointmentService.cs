@@ -1,4 +1,4 @@
-using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,11 +6,11 @@ namespace MiniProject.Services
 {
     public interface IAppointmentService
     {
-        Task<List<Appointment>> GetAllAsync();
-        Task<Appointment?> GetByIdAsync(int id);
-        Task<int> CreateAsync(Appointment appointment); // Returns new ID
-        Task UpdateAsync(Appointment appointment);
+        Task<List<AppointmentDTO>> GetAllAsync();
+        Task<AppointmentDTO?> GetByIdAsync(int id);
+        Task<int> CreateAsync(AppointmentDTO appointmentDTO); // Returns new ID
+        Task UpdateAsync(AppointmentDTO appointmentDTO);
         Task DeleteAsync(int id);
-        Task<List<Appointment>> GetByPatientIdAsync(int patientId);
+        Task<List<AppointmentDTO>> GetByPatientIdAsync(int patientId);
     }
 }

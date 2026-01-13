@@ -26,8 +26,17 @@
             <td>@item.Email</td>
             <td>@item.Phone</td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                <div class="btn-group" role="group">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <a asp-page="/Appointments/Create" asp-route-patientId="@item.Id" class="btn btn-sm btn-outline-success" title="Book Appointment">
+                        <i class="bi bi-calendar-plus"></i>
+                    </a>
+                </div>
             </td>
         </tr>
 }

@@ -39,9 +39,23 @@ button.accept-policy {
   line-height: inherit;
 }
 
+/* Make layout a column so footer naturally stays at the bottom (dynamic/sticky) */
+html, body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main[role="main"] {
+  flex: 1 0 auto;
+}
+
+/* Footer no longer absolute; it will sit after content or at bottom if content is short */
 .footer {
-  position: absolute;
-  bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px;

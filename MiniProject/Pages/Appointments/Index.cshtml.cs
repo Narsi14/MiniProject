@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using MiniProject.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace MiniProject.Pages.Appointments
             _service = service;
         }
 
-        public IList<Appointment> Appointments { get; set; } = default!;
+        public IList<AppointmentDTO> Appointments { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

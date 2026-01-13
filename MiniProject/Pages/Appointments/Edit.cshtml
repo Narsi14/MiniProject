@@ -36,9 +36,11 @@
                 <span asp-validation-for="Appointment.Status" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <label asp-for="Appointment.DoctorName" class="control-label"></label>
-                <input asp-for="Appointment.DoctorName" class="form-control" />
-                <span asp-validation-for="Appointment.DoctorName" class="text-danger"></span>
+                <label asp-for="Appointment.DoctorId" class="control-label">Doctor</label>
+                <select asp-for="Appointment.DoctorId" class="form-control" asp-items="Model.DoctorList">
+                    <option value="">-- Select Doctor --</option>
+                </select>
+                <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
             </div>
             
             <div class="form-group">

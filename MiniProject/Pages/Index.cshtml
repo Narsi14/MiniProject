@@ -4,7 +4,136 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="dashboard-container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="display-6 fw-bold text-primary"><i class="bi bi-speedometer2"></i> Dashboard</h1>
+        <span class="text-muted">@DateTime.Now.ToString("D")</span>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 bg-primary bg-gradient text-white dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-1 opacity-75">Total Patients</h6>
+                            <h2 class="card-title fw-bold display-4">@Model.TotalPatients</h2>
+                        </div>
+                        <i class="bi bi-people-fill fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 bg-warning bg-gradient text-white dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-1 opacity-75">Appointments</h6>
+                            <h2 class="card-title fw-bold display-4">@Model.TotalAppointments</h2>
+                        </div>
+                        <i class="bi bi-calendar-check-fill fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100 bg-info bg-gradient text-white dashboard-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-1 opacity-75">Lab Orders</h6>
+                            <h2 class="card-title fw-bold display-4">@Model.TotalLabOrders</h2>
+                        </div>
+                        <i class="bi bi-clipboard-pulse fs-1 opacity-50"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Recent Appointments -->
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history text-primary"></i> Recent Appointments</h5>
+                    <a asp-page="/Appointments/Index" class="btn btn-sm btn-outline-primary">View All</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4">Date</th>
+                                    <th>Patient</th>
+                                    <th>Doctor</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RecentAppointments.Any())
+                                {
+                                    @foreach (var appt in Model.RecentAppointments)
+                                    {
+                                        <tr>
+                                            <td class="ps-4">
+                                                <div class="fw-bold">@appt.AppointmentDate.ToString("MMM dd")</div>
+                                                <small class="text-muted">@appt.AppointmentDate.ToString("HH:mm")</small>
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(appt.PatientName))
+                                                {
+                                                    <span>@appt.PatientName</span>
+                                                }
+                                                else
+                                                {
+                                                     <span class="text-muted">Unknown</span>
+                                                }
+                                            </td>
+                                            <td>@(string.IsNullOrEmpty(appt.DoctorName) ? "-" : appt.DoctorName)</td>
+                                            <td>
+                                                <span class="badge rounded-pill @(appt.Status == "Completed" ? "bg-success" : appt.Status == "Cancelled" ? "bg-danger" : "bg-primary")">
+                                                    @appt.Status
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">Thinking about scheduling? No appointments yet.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-header bg-white py-3 border-0">
+                    <h5 class="mb-0 fw-bold"><i class="bi bi-lightning-charge text-warning"></i> Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a asp-page="/Patients/Create" class="btn btn-outline-primary btn-lg text-start shadow-sm">
+                            <i class="bi bi-person-plus-fill me-2"></i> Register New Patient
+                        </a>
+                        <a asp-page="/Appointments/Create" class="btn btn-outline-success btn-lg text-start shadow-sm">
+                            <i class="bi bi-calendar-plus-fill me-2"></i> Book Appointment
+                        </a>
+                        <a asp-page="/LabOrders/Create" class="btn btn-outline-info btn-lg text-start shadow-sm">
+                            <i class="bi bi-file-earmark-medical-fill me-2"></i> New Lab Order
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
