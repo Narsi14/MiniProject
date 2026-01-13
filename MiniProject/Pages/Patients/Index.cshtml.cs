@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using MiniProject.Services;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,7 +15,7 @@ namespace MiniProject.Pages.Patients
             _service = service;
         }
 
-        public IList<Patient> Patients { get; set; } = default!;
+        public IList<PatientDTO> Patients { get; set; } = default!;
 
         public async Task OnGetAsync()
         {

@@ -18,7 +18,7 @@
 
             <div class="form-group mb-3">
                 <label asp-for="Appointment.AppointmentDate" class="control-label"></label>
-                <input asp-for="Appointment.AppointmentDate" class="form-control" type="datetime-local" />
+                <input asp-for="Appointment.AppointmentDate" class="form-control" type="datetime-local" min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" />
                 <span asp-validation-for="Appointment.AppointmentDate" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
@@ -27,9 +27,11 @@
                 <span asp-validation-for="Appointment.Reason" class="text-danger"></span>
             </div>
             <div class="form-group mb-3">
-                <label asp-for="Appointment.DoctorName" class="control-label"></label>
-                <input asp-for="Appointment.DoctorName" class="form-control" />
-                <span asp-validation-for="Appointment.DoctorName" class="text-danger"></span>
+                <label asp-for="Appointment.DoctorId" class="control-label">Doctor</label>
+                <select asp-for="Appointment.DoctorId" class="form-control" asp-items="Model.DoctorList">
+                    <option value="">-- Select Doctor --</option>
+                </select>
+                <span asp-validation-for="Appointment.DoctorId" class="text-danger"></span>
             </div>
             
             <div class="form-group">

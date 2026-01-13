@@ -21,14 +21,35 @@
 @foreach (var item in Model.Appointments) {
         <tr>
             <td>@item.AppointmentDate</td>
-            <td>@(item.Patient?.Name ?? "Unknown")</td>
+            <td>@((!string.IsNullOrEmpty(item.PatientName)) ? item.PatientName : "Unknown")</td>
             <td>@item.Reason</td>
             <td>@item.DoctorName</td>
-            <td>@item.Status</td>
             <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-page="/LabOrders/Create" asp-route-appointmentId="@item.Id">Add Lab</a>
+                @if (item.Status == "Scheduled")
+                {
+                    <span class="badge bg-primary">@item.Status</span>
+                }
+                else if (item.Status == "Completed")
+                {
+                    <span class="badge bg-success">@item.Status</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">@item.Status</span>
+                }
+            </td>
+            <td>
+                <div class="btn-group" role="group">
+                    <a asp-page="./Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-info" title="Edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a asp-page="./Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                    <a asp-page="/LabOrders/Create" asp-route-appointmentId="@item.Id" class="btn btn-sm btn-outline-success" title="Add Lab">
+                        <i class="bi bi-plus-circle"></i> Lab
+                    </a>
+                </div>
             </td>
         </tr>
 }

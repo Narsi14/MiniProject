@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using MiniProject.Models.Validation;
 
 namespace MiniProject.Models
 {
@@ -13,10 +14,12 @@ namespace MiniProject.Models
 
         [Required]
         [StringLength(100)]
+        [RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Name must contain only letters and spaces.")]
         public string Name { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
+        [PastDate(ErrorMessage = "Date of birth must be a past date.")]
         public DateTime DateOfBirth { get; set; }
 
         [Required]
@@ -28,7 +31,7 @@ namespace MiniProject.Models
         public string? Email { get; set; }
 
         [StringLength(20)]
-        [Phone]
+        [RegularExpression(@"^\d{7,15}$", ErrorMessage = "Phone must contain only digits (7-15 digits).")]
         public string? Phone { get; set; }
 
         // Navigation Property

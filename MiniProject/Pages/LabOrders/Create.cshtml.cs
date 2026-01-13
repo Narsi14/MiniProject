@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using MiniProject.Services;
 using System.Threading.Tasks;
 
@@ -24,11 +24,11 @@ namespace MiniProject.Pages.LabOrders
         {
             var appts = await _apptService.GetAllAsync();
             // Just showing ID and Patient Name for simple selection
-            var selectListItems = appts.ConvertAll(a => new { Id = a.Id, Text = $"#{a.Id} - {a.Patient?.Name} ({a.AppointmentDate.ToShortDateString()})" });
+            var selectListItems = appts.ConvertAll(a => new { Id = a.Id, Text = $"#{a.Id} - {a.PatientName} ({a.AppointmentDate.ToShortDateString()})" });
             
             AppointmentList = new SelectList(selectListItems, "Id", "Text", appointmentId);
             
-            LabOrder = new LabOrder();
+            LabOrder = new LabOrderDTO();
             if(appointmentId.HasValue)
             {
                 LabOrder.AppointmentId = appointmentId.Value;
@@ -38,7 +38,7 @@ namespace MiniProject.Pages.LabOrders
         }
 
         [BindProperty]
-        public LabOrder LabOrder { get; set; } = default!;
+        public LabOrderDTO LabOrder { get; set; } = default!;
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -49,7 +49,7 @@ namespace MiniProject.Pages.LabOrders
             if (!ModelState.IsValid)
             {
                  var appts = await _apptService.GetAllAsync();
-                 var selectListItems = appts.ConvertAll(a => new { Id = a.Id, Text = $"#{a.Id} - {a.Patient?.Name}" });
+                 var selectListItems = appts.ConvertAll(a => new { Id = a.Id, Text = $"#{a.Id} - {a.PatientName}" });
                  AppointmentList = new SelectList(selectListItems, "Id", "Text");
                  return Page();
             }

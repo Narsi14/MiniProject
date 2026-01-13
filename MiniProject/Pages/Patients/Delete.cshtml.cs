@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using MiniProject.Services;
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace MiniProject.Pages.Patients
         }
 
         [BindProperty]
-        public Patient Patient { get; set; } = default!;
+        public PatientDTO Patient { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -42,7 +42,17 @@ namespace MiniProject.Pages.Patients
                 return NotFound();
             }
 
-            await _service.DeleteAsync(id.Value);
+            try
+            {
+                await _service.DeleteAsync(id.Value);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var patient = await _service.GetByIdAsync(id.Value);
+                if (patient != null) Patient = patient;
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

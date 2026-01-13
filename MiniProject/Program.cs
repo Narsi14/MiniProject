@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MiniProject.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddScoped<MiniProject.Services.IPatientService, MiniProject.Ser
 builder.Services.AddScoped<MiniProject.Services.IAppointmentService, MiniProject.Services.AppointmentService>();
 builder.Services.AddScoped<MiniProject.Services.ILabOrderService, MiniProject.Services.LabOrderService>();
 builder.Services.AddScoped<MiniProject.Services.IReportService, MiniProject.Services.ReportService>();
-
+builder.Services.AddScoped<IDoctorService, DoctorService>();
 
 
 var app = builder.Build();

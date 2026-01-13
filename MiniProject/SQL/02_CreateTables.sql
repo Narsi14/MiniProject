@@ -26,8 +26,10 @@ BEGIN
         [Reason] [nvarchar](255) NULL,
         [Status] [nvarchar](50) NOT NULL DEFAULT 'Scheduled', -- Scheduled, Completed, Cancelled
         [DoctorName] [nvarchar](100) NULL,
+        [DoctorId] [int] NULL,
         CONSTRAINT [PK_Appointment] PRIMARY KEY CLUSTERED ([Id] ASC),
-        CONSTRAINT [FK_Appointment_Patient] FOREIGN KEY([PatientId]) REFERENCES [Healthcare].[Patient] ([Id]) ON DELETE CASCADE
+        CONSTRAINT [FK_Appointment_Patient] FOREIGN KEY([PatientId]) REFERENCES [Healthcare].[Patient] ([Id]) ON DELETE CASCADE,
+        CONSTRAINT [FK_Appointment_Doctor] FOREIGN KEY([DoctorId]) REFERENCES [Healthcare].[Doctor] ([Id])
     );
 END
 GO

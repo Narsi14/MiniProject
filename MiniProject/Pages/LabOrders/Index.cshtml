@@ -11,19 +11,37 @@
         <tr>
             <th>Order Date</th>
             <th>Patient</th>
-            <th>Test Name</th>
-            <th>Status</th>
             <th>Result</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model.LabOrders) {
         <tr>
             <td>@item.OrderDate</td>
-            <td>@(item.Appointment?.Patient?.Name ?? "Unknown")</td>
+            <td>@((!string.IsNullOrEmpty(item.PatientName)) ? item.PatientName : "Unknown")</td>
             <td>@item.TestName</td>
-            <td>@item.Status</td>
+            <td>
+                @if (item.Status == "Pending")
+                {
+                    <span class="badge bg-warning text-dark">@item.Status</span>
+                }
+                else
+                {
+                    <span class="badge bg-success">@item.Status</span>
+                }
+            </td>
             <td>@item.Result</td>
+            <td>
+                @if (item.Status == "Pending")
+                {
+                    <form method="post" asp-page-handler="Complete" asp-route-id="@item.Id" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-outline-success">
+                            <i class="bi bi-check-circle"></i> Complete
+                        </button>
+                    </form>
+                }
+            </td>
         </tr>
 }
     </tbody>

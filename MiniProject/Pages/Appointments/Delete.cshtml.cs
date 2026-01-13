@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniProject.Models;
+using MiniProject.Models.DTOs;
 using MiniProject.Services;
 using System.Threading.Tasks;
 
@@ -16,7 +16,7 @@ namespace MiniProject.Pages.Appointments
         }
 
         [BindProperty]
-        public Appointment Appointment { get; set; } = default!;
+        public AppointmentDTO Appointment { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -33,7 +33,17 @@ namespace MiniProject.Pages.Appointments
         {
             if (id == null) return NotFound();
 
-            await _service.DeleteAsync(id.Value);
+            try
+            {
+                await _service.DeleteAsync(id.Value);
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(string.Empty, ex.Message);
+                var appt = await _service.GetByIdAsync(id.Value);
+                if (appt != null) Appointment = appt;
+                return Page();
+            }
 
             return RedirectToPage("./Index");
         }

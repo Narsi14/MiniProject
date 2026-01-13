@@ -30,6 +30,11 @@ namespace MiniProject.Models
         [StringLength(100)]
         public string? DoctorName { get; set; }
 
+        public int? DoctorId { get; set; }
+
+        [ForeignKey("DoctorId")]
+        public Doctor? Doctor { get; set; }
+
         // Navigation Property
         public ICollection<LabOrder> LabOrders { get; set; } = new List<LabOrder>();
     }

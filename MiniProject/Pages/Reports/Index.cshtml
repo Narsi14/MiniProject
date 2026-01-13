@@ -3,75 +3,101 @@
 
 <h2>Reporting Dashboard</h2>
 
-<ul class="nav nav-tabs" id="reportTabs" role="tablist">
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">Pending Lab Orders</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="kpi-tab" data-bs-toggle="tab" data-bs-target="#kpi" type="button" role="tab">Patients w/o Follow-Up</button>
-    </li>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="doc-tab" data-bs-toggle="tab" data-bs-target="#doc" type="button" role="tab">Doctor Stats</button>
-    </li>
-</ul>
-
-<div class="tab-content pt-3" id="myTabContent">
-    <!-- Pending Lab Orders -->
-    <div class="tab-pane fade show active" id="pending" role="tabpanel">
-        <h4>Pending Lab Orders</h4>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Order Date</th>
-                    <th>Patient</th>
-                    <th>Test</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var x in Model.PendingLabOrders)
-                {
-                    <tr>
-                        <td>@x.OrderDate.ToShortDateString()</td>
-                        <td>@x.Appointment?.Patient?.Name</td>
-                        <td>@x.TestName</td>
-                        <td>@x.Status</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Patients Without Follow-Up -->
-    <div class="tab-pane fade" id="kpi" role="tabpanel">
-        <h4>Patients Without Follow-Up (No Future Appointments)</h4>
-        <ul class="list-group">
-            @foreach (var p in Model.PatientsNoFollowUp)
-            {
-                <li class="list-group-item">@p.Name (Last known info: @p.Phone)</li>
-            }
+<div class="card shadow-lg border-0">
+    <div class="card-body p-4">
+        <ul class="nav nav-pills mb-4" id="reportTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active me-2" id="pending-tab" data-bs-toggle="tab" data-bs-target="#pending" type="button" role="tab">
+                    <i class="bi bi-flask-reagent"></i> Pending Labs
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link me-2" id="kpi-tab" data-bs-toggle="tab" data-bs-target="#kpi" type="button" role="tab">
+                    <i class="bi bi-person-x"></i> No Follow-Up
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="doc-tab" data-bs-toggle="tab" data-bs-target="#doc" type="button" role="tab">
+                    <i class="bi bi-person-badge"></i> Doctor Stats
+                </button>
+            </li>
         </ul>
-    </div>
 
-    <!-- Doctor Stats -->
-    <div class="tab-pane fade" id="doc" role="tabpanel">
-        <h4>Doctor Appointment Volume</h4>
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Doctor Name</th>
-                    <th>Total Appointments</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var d in Model.DoctorStats)
-                {
-                    <tr>
-                        <td>@d.DoctorName</td>
-                        <td>@d.AppointmentCount</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        <div class="tab-content" id="myTabContent">
+            <!-- Pending Lab Orders -->
+            <div class="tab-pane fade show active" id="pending" role="tabpanel">
+                <h4 class="mb-3">Pending Lab Orders</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Order Date</th>
+                                <th>Patient</th>
+                                <th>Test</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var x in Model.PendingLabOrders)
+                            {
+                                <tr>
+                                    <td>@x.OrderDate.ToShortDateString()</td>
+                                    <td>@x.Appointment?.Patient?.Name</td>
+                                    <td>@x.TestName</td>
+                                    <td><span class="badge bg-warning text-dark">@x.Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Patients Without Follow-Up -->
+            <div class="tab-pane fade" id="kpi" role="tabpanel">
+                <h4 class="mb-3">Patients Without Follow-Up</h4>
+                <div class="list-group">
+                    @foreach (var p in Model.PatientsNoFollowUp)
+                    {
+                        <div class="list-group-item bg-transparent border-light mb-2 rounded">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@p.Name</h5>
+                                <small class="text-muted">ID: #@p.Id</small>
+                            </div>
+                            <p class="mb-1 text-muted">No future appointments found. Last known contact: @p.Phone</p>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Doctor Stats -->
+            <div class="tab-pane fade" id="doc" role="tabpanel">
+                <h4 class="mb-3">Doctor Appointment Volume</h4>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Doctor Name</th>
+                                <th>Total Appointments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var d in Model.DoctorStats)
+                            {
+                                <tr>
+                                    <td><i class="bi bi-person-vcard me-2 text-primary"></i> @d.DoctorName</td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-info" role="progressbar" style="width: @(d.AppointmentCount * 10)%" aria-valuenow="@d.AppointmentCount" aria-valuemin="0" aria-valuemax="100">
+                                                @d.AppointmentCount
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
