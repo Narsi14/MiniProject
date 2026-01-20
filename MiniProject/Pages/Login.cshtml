@@ -1,0 +1,118 @@
+@page
+@model MiniProject.Pages.LoginModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Login";
+}
+
+<style>
+    :root {
+        --primary-orange: #ff6b00;
+        --secondary-orange: #ff9e00;
+        --soft-white: #f8f9fa;
+        --deep-gray: #343a40;
+    }
+
+    body {
+        background-color: var(--soft-white);
+    }
+
+    .login-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-card {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        overflow: hidden;
+    }
+
+    .login-header {
+        background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+        color: white;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .login-header i {
+        font-size: 3rem;
+        margin-bottom: 15px;
+    }
+
+    .login-body {
+        padding: 40px;
+        background: white;
+    }
+
+    .btn-orange {
+        background-color: var(--primary-orange);
+        border: none;
+        color: white;
+        padding: 12px;
+        font-weight: 600;
+        width: 100%;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .btn-orange:hover {
+        background-color: var(--secondary-orange);
+        color: white;
+        transform: translateY(-2px);
+    }
+
+    .form-control:focus {
+        border-color: var(--primary-orange);
+        box-shadow: 0 0 0 0.25rem rgba(255, 107, 0, 0.25);
+    }
+</style>
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <i class="bi bi-heart-pulse-fill"></i>
+            <h2 class="mt-2">HCAMiniEHR</h2>
+            <p class="mb-0 opacity-75">Sign in to your account</p>
+        </div>
+        <div class="login-body">
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger mb-4" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @Model.ErrorMessage
+                </div>
+            }
+            <form method="post">
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-bold">USERNAME</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-person"></i>
+                        </span>
+                        <input type="text" asp-for="Username" class="form-control border-start-0 ps-0" placeholder="Enter username" required />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label text-muted small fw-bold">PASSWORD</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0 text-muted">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input type="password" asp-for="Password" class="form-control border-start-0 ps-0" placeholder="Enter password" required />
+                    </div>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-orange">LOGIN</button>
+                </div>
+            </form>
+            <div class="mt-4 text-center">
+                <small class="text-muted">Default: Admin / Admin@123</small>
+            </div>
+        </div>
+    </div>
+</div>
